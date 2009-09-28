@@ -1,0 +1,8 @@
+# Configuration definitions for thorn OpenSSL
+# $Header$
+
+PROVIDES OpenSSL
+{
+  SCRIPT OpenSSL.sh
+  LANG bash
+}
