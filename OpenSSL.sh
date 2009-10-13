@@ -15,6 +15,7 @@ INSTALL_DIR=${SCRATCH_BUILD}
 OPENSSL_DIR=${INSTALL_DIR}/${NAME}
 
 # Clean up environment
+unset EXE
 unset LIBS
 unset MAKEFLAGS
 
