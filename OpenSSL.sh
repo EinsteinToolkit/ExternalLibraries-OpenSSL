@@ -9,7 +9,7 @@ set -x                          # Output commands
 set -e                          # Abort on errors
 
 # Set locations
-NAME=openssl-0.9.8k
+NAME=openssl-0.9.8l
 SRCDIR=$(dirname $0)
 INSTALL_DIR=${SCRATCH_BUILD}
 OPENSSL_DIR=${INSTALL_DIR}/${NAME}
@@ -57,7 +57,7 @@ unset MAKEFLAGS
         make install
         popd
         
-        : > done-${NAME}
+        echo 'done' > done-${NAME}
         echo "OpenSSL: Done."
     fi
 )
