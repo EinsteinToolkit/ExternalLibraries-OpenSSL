@@ -42,6 +42,7 @@ unset MAKEFLAGS
         # Should we use gtar or tar?
         TAR=$(gtar --help > /dev/null 2> /dev/null && echo gtar || echo tar)
         ${TAR} xzf ${SRCDIR}/dist/${NAME}.tar.gz
+        patch -p1 < ${SRCDIR}/dist/darwin.patch
         popd
         
         echo "OpenSSL: Configuring..."
