@@ -63,6 +63,13 @@ unset MAKEFLAGS
     fi
 )
 
+if (( $? )); then
+    echo 'BEGIN ERROR'
+    echo 'Error while building OpenSSL.  Aborting.'
+    echo 'END ERROR'
+    exit 1
+fi
+
 
 
 ################################################################################
