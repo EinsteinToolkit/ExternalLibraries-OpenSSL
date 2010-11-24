@@ -8,16 +8,42 @@
 set -x                          # Output commands
 set -e                          # Abort on errors
 
-# Set locations
-NAME=openssl-0.9.8l
-SRCDIR=$(dirname $0)
-INSTALL_DIR=${SCRATCH_BUILD}
-OPENSSL_DIR=${INSTALL_DIR}/${NAME}
 
-# Clean up environment
-unset EXE
-unset LIBS
-unset MAKEFLAGS
+
+################################################################################
+# Search
+################################################################################
+
+if [ -z "${OPENSSL_DIR}" ]; then
+    echo "BEGIN MESSAGE"
+    echo "OpenSSL selected, but OPENSSL_DIR not set. Checking some places..."
+    echo "END MESSAGE"
+    
+    FILES="include/openssl/ssl.h lib/libssl.a lib/libcrypto.a"
+    DIRS="/usr /usr/local /opt/local"
+    for dir in $DIRS; do
+        OPENSSL_DIR="$dir"
+        for file in $FILES; do
+            if [ ! -r "$dir/$file" ]; then
+                unset OPENSSL_DIR
+                break
+            fi
+        done
+        if [ -n "$OPENSSL_DIR" ]; then
+            break
+        fi
+    done
+    
+    if [ -z "$OPENSSL_DIR" ]; then
+        echo "BEGIN MESSAGE"
+        echo "OpenSSL not found"
+        echo "END MESSAGE"
+    else
+        echo "BEGIN MESSAGE"
+        echo "Found OpenSSL in ${OPENSSL_DIR}"
+        echo "END MESSAGE"
+    fi
+fi
 
 
 
@@ -25,51 +51,81 @@ unset MAKEFLAGS
 # Build
 ################################################################################
 
+if [ -z "${OPENSSL_DIR}" -o "${OPENSSL_DIR}" = 'BUILD' ]; then
+    echo "BEGIN MESSAGE"
+    echo "Building OpenSSL..."
+    echo "END MESSAGE"
+    
+    # Set locations
+    THORN=OpenSSL
+    NAME=openssl-0.9.8l
+    SRCDIR=$(dirname $0)
+    BUILD_DIR=${SCRATCH_BUILD}/build/${THORN}
+    INSTALL_DIR=${SCRATCH_BUILD}/external/${THORN}
+    DONE_FILE=${SCRATCH_BUILD}/done/${THORN}
+    OPENSSL_DIR=${INSTALL_DIR}
+
 (
     exec >&2                    # Redirect stdout to stderr
     set -x                      # Output commands
     set -e                      # Abort on errors
-    cd ${INSTALL_DIR}
-    if [ -e done-${NAME} -a done-${NAME} -nt ${SRCDIR}/dist/${NAME}.tar.gz \
-                         -a done-${NAME} -nt ${SRCDIR}/OpenSSL.sh ]
+    cd ${SCRATCH_BUILD}
+    if [ -e ${DONE_FILE} -a ${DONE_FILE} -nt ${SRCDIR}/dist/${NAME}.tar.gz \
+                         -a ${DONE_FILE} -nt ${SRCDIR}/OpenSSL.sh ]
     then
         echo "OpenSSL: The enclosed OpenSSL library has already been built; doing nothing"
     else
         echo "OpenSSL: Building enclosed OpenSSL library"
         
-        echo "OpenSSL: Unpacking archive..."
-        rm -rf build-${NAME}
-        mkdir build-${NAME}
-        pushd build-${NAME}
+        # Should we use gmake or make?
+        MAKE=$(gmake --help > /dev/null 2>&1 && echo gmake || echo make)
         # Should we use gtar or tar?
         TAR=$(gtar --help > /dev/null 2> /dev/null && echo gtar || echo tar)
+        if [ -z "$PATCH" ]; then
+            PATCH=$(gpatch -v > /dev/null 2>&1 && echo gpatch || echo patch)
+        fi
+        
+        # Set up environment
+        unset EXE
+        unset LIBS
+        unset MAKEFLAGS
+        
+        echo "OpenSSL: Preparing directory structure..."
+        mkdir build external done 2> /dev/null || true
+        rm -rf ${BUILD_DIR} ${INSTALL_DIR}
+        mkdir ${BUILD_DIR} ${INSTALL_DIR}
+        
+        echo "OpenSSL: Unpacking archive..."
+        pushd ${BUILD_DIR}
         ${TAR} xzf ${SRCDIR}/dist/${NAME}.tar.gz
-        patch -p1 < ${SRCDIR}/dist/darwin.patch
-        popd
+        ${PATCH} -p1 < ${SRCDIR}/dist/darwin.patch
         
         echo "OpenSSL: Configuring..."
-        rm -rf ${NAME}
-        mkdir ${NAME}
-        pushd build-${NAME}/${NAME}
+        cd ${NAME}
         ./config --prefix=${OPENSSL_DIR}
         
         echo "OpenSSL: Building..."
-        make
+        ${MAKE}
         
         echo "OpenSSL: Installing..."
-        make install
+        ${MAKE} install
         popd
         
-        echo 'done' > done-${NAME}
+        echo "OpenSSL: Cleaning up..."
+        rm -rf ${BUILD_DIR}
+        
+        date > ${DONE_FILE}
         echo "OpenSSL: Done."
     fi
 )
 
-if (( $? )); then
-    echo 'BEGIN ERROR'
-    echo 'Error while building OpenSSL.  Aborting.'
-    echo 'END ERROR'
-    exit 1
+    if (( $? )); then
+        echo 'BEGIN ERROR'
+        echo 'Error while building OpenSSL.  Aborting.'
+        echo 'END ERROR'
+        exit 1
+    fi
+
 fi
 
 
