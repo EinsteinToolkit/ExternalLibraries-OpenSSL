@@ -58,7 +58,7 @@ if [ -z "${OPENSSL_DIR}" -o "${OPENSSL_DIR}" = 'BUILD' ]; then
     
     # Set locations
     THORN=OpenSSL
-    NAME=openssl-0.9.8l
+    NAME=openssl-1.0.0c
     SRCDIR=$(dirname $0)
     BUILD_DIR=${SCRATCH_BUILD}/build/${THORN}
     INSTALL_DIR=${SCRATCH_BUILD}/external/${THORN}
@@ -88,7 +88,7 @@ if [ -z "${OPENSSL_DIR}" -o "${OPENSSL_DIR}" = 'BUILD' ]; then
         # Set up environment
         unset EXE
         unset LIBS
-        unset MAKEFLAGS
+        unset MAKEFLAGS # For some reason, openssl does not compile with this
         
         echo "OpenSSL: Preparing directory structure..."
         mkdir build external done 2> /dev/null || true
@@ -98,7 +98,7 @@ if [ -z "${OPENSSL_DIR}" -o "${OPENSSL_DIR}" = 'BUILD' ]; then
         echo "OpenSSL: Unpacking archive..."
         pushd ${BUILD_DIR}
         ${TAR} xzf ${SRCDIR}/dist/${NAME}.tar.gz
-        ${PATCH} -p1 < ${SRCDIR}/dist/darwin.patch
+        ${PATCH} -p0 < ${SRCDIR}/dist/darwin.patch
         
         echo "OpenSSL: Configuring..."
         cd ${NAME}
