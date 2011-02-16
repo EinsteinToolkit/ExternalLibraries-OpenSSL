@@ -1,6 +1,6 @@
-diff -ru openssl-1.0.0c.orig/Configure openssl-1.0.0c/Configure
---- openssl-1.0.0c.orig/Configure	2010-11-30 16:19:26.000000000 -0600
-+++ openssl-1.0.0c/Configure	2011-02-01 10:32:56.000000000 -0600
+diff -ru openssl-1.0.0d.orig/Configure openssl-1.0.0d/Configure
+--- openssl-1.0.0d.orig/Configure	2010-11-30 16:19:26.000000000 -0600
++++ openssl-1.0.0d/Configure	2011-02-01 10:32:56.000000000 -0600
 @@ -549,11 +549,11 @@
  
  ##### MacOS X (a.k.a. Rhapsody or Darwin) setup
