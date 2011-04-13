@@ -135,8 +135,10 @@ fi
 ################################################################################
 
 # Set options
-OPENSSL_INC_DIRS="${OPENSSL_DIR}/include"
-OPENSSL_LIB_DIRS="${OPENSSL_DIR}/lib"
+if [ "${OPENSSL_DIR}" != '/usr' -a "${OPENSSL_DIR}" != '/usr/local' ]; then
+  OPENSSL_INC_DIRS="${OPENSSL_DIR}/include"
+  OPENSSL_LIB_DIRS="${OPENSSL_DIR}/lib"
+fi
 OPENSSL_LIBS='ssl crypto'
 
 # Pass options to Cactus
