@@ -51,7 +51,9 @@ fi
 # Build
 ################################################################################
 
-if [ -z "${OPENSSL_DIR}" -o "${OPENSSL_DIR}" = 'BUILD' ]; then
+if [ -z "${OPENSSL_DIR}"                                                \
+     -o "$(echo "${OPENSSL_DIR}" | tr '[a-z]' '[A-Z]')" = 'BUILD' ]
+then
     echo "BEGIN MESSAGE"
     echo "Building OpenSSL..."
     echo "END MESSAGE"
