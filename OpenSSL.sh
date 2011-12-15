@@ -5,7 +5,9 @@
 ################################################################################
 
 # Set up shell
-set -x                          # Output commands
+if [ "$(echo ${VERBOSE} | tr '[:upper:]' '[:lower:]')" = 'yes' ]; then
+    set -x                      # Output commands
+fi
 set -e                          # Abort on errors
 
 
@@ -55,7 +57,7 @@ if [ -z "${OPENSSL_DIR}"                                                \
      -o "$(echo "${OPENSSL_DIR}" | tr '[a-z]' '[A-Z]')" = 'BUILD' ]
 then
     echo "BEGIN MESSAGE"
-    echo "Building OpenSSL..."
+    echo "Using bundled OpenSSL..."
     echo "END MESSAGE"
     
     # Set locations
@@ -64,38 +66,35 @@ then
     SRCDIR=$(dirname $0)
     BUILD_DIR=${SCRATCH_BUILD}/build/${THORN}
     if [ -z "${OPENSSL_INSTALL_DIR}" ]; then
-        echo "BEGIN MESSAGE"
-        echo "OPENSSL install directory, OPENSSL_INSTALL_DIR, not set. Installing in the default configuration location. "
-        echo "END MESSAGE"
-     INSTALL_DIR=${SCRATCH_BUILD}/external/${THORN}
+        INSTALL_DIR=${SCRATCH_BUILD}/external/${THORN}
     else
         echo "BEGIN MESSAGE"
-        echo "OPENSSL install directory, OPENSSL_INSTALL_DIR, selected. Installing OPENSSL at ${OPENSSL_INSTALL_DIR} "
+        echo "Installing OpenSSL into ${OPENSSL_INSTALL_DIR}"
         echo "END MESSAGE"
-     INSTALL_DIR=${OPENSSL_INSTALL_DIR}
+        INSTALL_DIR=${OPENSSL_INSTALL_DIR}
     fi
     DONE_FILE=${SCRATCH_BUILD}/done/${THORN}
     OPENSSL_DIR=${INSTALL_DIR}
 
-(
-    exec >&2                    # Redirect stdout to stderr
-    set -x                      # Output commands
-    set -e                      # Abort on errors
-    cd ${SCRATCH_BUILD}
     if [ -e ${DONE_FILE} -a ${DONE_FILE} -nt ${SRCDIR}/dist/${NAME}.tar.gz \
                          -a ${DONE_FILE} -nt ${SRCDIR}/OpenSSL.sh ]
     then
-        echo "OpenSSL: The enclosed OpenSSL library has already been built; doing nothing"
+        echo "BEGIN MESSAGE"
+        echo "OpenSSL has already been built; doing nothing"
+        echo "END MESSAGE"
     else
-        echo "OpenSSL: Building enclosed OpenSSL library"
+        echo "BEGIN MESSAGE"
+        echo "Building OpenSSL"
+        echo "END MESSAGE"
         
-        # Should we use gmake or make?
-        MAKE=$(gmake --help > /dev/null 2>&1 && echo gmake || echo make)
-        # Should we use gtar or tar?
-        TAR=$(gtar --help > /dev/null 2> /dev/null && echo gtar || echo tar)
-        if [ -z "$PATCH" ]; then
-            PATCH=$(gpatch -v > /dev/null 2>&1 && echo gpatch || echo patch)
+        # Build in a subshell
+        (
+        exec >&2                # Redirect stdout to stderr
+        if [ "$(echo ${VERBOSE} | tr '[:upper:]' '[:lower:]')" = 'yes' ]; then
+            set -x              # Output commands
         fi
+        set -e                  # Abort on errors
+        cd ${SCRATCH_BUILD}
         
         # Set up environment
         unset EXE
@@ -128,16 +127,17 @@ then
         
         date > ${DONE_FILE}
         echo "OpenSSL: Done."
+        
+        )
+        
+        if (( $? )); then
+            echo 'BEGIN ERROR'
+            echo 'Error while building OpenSSL. Aborting.'
+            echo 'END ERROR'
+            exit 1
+        fi
     fi
-)
-
-    if (( $? )); then
-        echo 'BEGIN ERROR'
-        echo 'Error while building OpenSSL.  Aborting.'
-        echo 'END ERROR'
-        exit 1
-    fi
-
+    
 fi
 
 
@@ -148,8 +148,8 @@ fi
 
 # Set options
 if [ "${OPENSSL_DIR}" != '/usr' -a "${OPENSSL_DIR}" != '/usr/local' ]; then
-  OPENSSL_INC_DIRS="${OPENSSL_DIR}/include"
-  OPENSSL_LIB_DIRS="${OPENSSL_DIR}/lib"
+    OPENSSL_INC_DIRS="${OPENSSL_DIR}/include"
+    OPENSSL_LIB_DIRS="${OPENSSL_DIR}/lib"
 fi
 OPENSSL_LIBS='ssl crypto'
 
