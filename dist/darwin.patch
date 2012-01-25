@@ -1,6 +1,9 @@
-diff -ru openssl-1.0.0d.orig/Configure openssl-1.0.0d/Configure
---- openssl-1.0.0d.orig/Configure	2010-11-30 16:19:26.000000000 -0600
-+++ openssl-1.0.0d/Configure	2011-02-01 10:32:56.000000000 -0600
+Common subdirectories: openssl-1.0.0g.orig/apps and openssl-1.0.0g/apps
+Common subdirectories: openssl-1.0.0g.orig/bugs and openssl-1.0.0g/bugs
+Common subdirectories: openssl-1.0.0g.orig/certs and openssl-1.0.0g/certs
+diff -u openssl-1.0.0g.orig/Configure openssl-1.0.0g/Configure
+--- openssl-1.0.0g.orig/Configure	2011-12-19 11:04:38.000000000 -0600
++++ openssl-1.0.0g/Configure	2012-01-24 23:39:41.000000000 -0600
 @@ -549,11 +549,11 @@
  
  ##### MacOS X (a.k.a. Rhapsody or Darwin) setup
@@ -9,12 +12,29 @@ diff -ru openssl-1.0.0d.orig/Configure openssl-1.0.0d/Configure
 -"darwin64-ppc-cc","cc:-arch ppc64 -O3 -DB_ENDIAN::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:SIXTY_FOUR_BIT_LONG RC4_CHAR RC4_CHUNK DES_UNROLL BF_PTR:${ppc64_asm}:osx64:dlfcn:darwin-shared:-fPIC -fno-common:-arch ppc64 -dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
 -"darwin-i386-cc","cc:-arch i386 -O3 -fomit-frame-pointer -DL_ENDIAN::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:BN_LLONG RC4_INT RC4_CHUNK DES_UNROLL BF_PTR:${x86_asm}:macosx:dlfcn:darwin-shared:-fPIC -fno-common:-arch i386 -dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
 -"debug-darwin-i386-cc","cc:-arch i386 -g3 -DL_ENDIAN::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:BN_LLONG RC4_INT RC4_CHUNK DES_UNROLL BF_PTR:${x86_asm}:macosx:dlfcn:darwin-shared:-fPIC -fno-common:-arch i386 -dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
--"darwin64-x86_64-cc","cc:-arch x86_64 -O3 -DL_ENDIAN -DMD32_REG_T=int -Wall::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:SIXTY_FOUR_BIT_LONG RC4_CHAR RC4_CHUNK DES_INT DES_UNROLL:${x86_64_asm}:macosx:dlfcn:darwin-shared:-fPIC -fno-common:-arch x86_64 -dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
-+"darwin-ppc-cc","cc:-O3 -DB_ENDIAN -Wa,-force_cpusubtype_ALL::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:BN_LLONG RC4_CHAR RC4_CHUNK DES_UNROLL BF_PTR:${ppc32_asm}:osx32:dlfcn:darwin-shared:-fPIC -fno-common:-dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
-+"darwin64-ppc-cc","cc:-O3 -DB_ENDIAN::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:SIXTY_FOUR_BIT_LONG RC4_CHAR RC4_CHUNK DES_UNROLL BF_PTR:${ppc64_asm}:osx64:dlfcn:darwin-shared:-fPIC -fno-common:-dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
-+"darwin-i386-cc","cc:-O3 -fomit-frame-pointer -DL_ENDIAN::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:BN_LLONG RC4_INT RC4_CHUNK DES_UNROLL BF_PTR:${x86_asm}:macosx:dlfcn:darwin-shared:-fPIC -fno-common:-dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
-+"debug-darwin-i386-cc","cc:-g3 -DL_ENDIAN::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:BN_LLONG RC4_INT RC4_CHUNK DES_UNROLL BF_PTR:${x86_asm}:macosx:dlfcn:darwin-shared:-fPIC -fno-common:-dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
-+"darwin64-x86_64-cc","cc:-O3 -DL_ENDIAN -DMD32_REG_T=int -Wall::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:SIXTY_FOUR_BIT_LONG RC4_CHAR RC4_CHUNK DES_INT DES_UNROLL:${x86_64_asm}:macosx:dlfcn:darwin-shared:-fPIC -fno-common:-dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
+-"darwin64-x86_64-cc","cc:-arch x86_64 -O3 -DL_ENDIAN -DMD32_REG_T=int -Wall::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:SIXTY_FOUR_BIT_LONG RC4_CHAR RC4_CHUNK DES_INT DES_UNROLL:".eval{my $asm=$x86_64_asm;$asm=~s/rc4\-[^:]+//;$asm}.":macosx:dlfcn:darwin-shared:-fPIC -fno-common:-arch x86_64 -dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
++"darwin-ppc-cc","cc:-O3 -DB_ENDIAN -Wa,-force_cpusubtype_ALL::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:BN_LLONG RC4_CHAR RC4_CHUNK DES_UNROLL BF_PTR:${ppc32_asm}:osx32:dlfcn:darwin-shared:-fPIC -dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
++"darwin64-ppc-cc","cc:-O3 -DB_ENDIAN::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:SIXTY_FOUR_BIT_LONG RC4_CHAR RC4_CHUNK DES_UNROLL BF_PTR:${ppc64_asm}:osx64:dlfcn:darwin-shared:-fPIC -dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
++"darwin-i386-cc","cc:-O3 -fomit-frame-pointer -DL_ENDIAN::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:BN_LLONG RC4_INT RC4_CHUNK DES_UNROLL BF_PTR:${x86_asm}:macosx:dlfcn:darwin-shared:-fPIC -dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
++"debug-darwin-i386-cc","cc:-g3 -DL_ENDIAN::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:BN_LLONG RC4_INT RC4_CHUNK DES_UNROLL BF_PTR:${x86_asm}:macosx:dlfcn:darwin-shared:-fPIC -dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
++"darwin64-x86_64-cc","cc:-O3 -DL_ENDIAN -DMD32_REG_T=int -Wall::-D_REENTRANT:MACOSX:-Wl,-search_paths_first%:SIXTY_FOUR_BIT_LONG RC4_CHAR RC4_CHUNK DES_INT DES_UNROLL:".eval{my $asm=$x86_64_asm;$asm=~s/rc4\-[^:]+//;$asm}.":macosx:dlfcn:darwin-shared:-fPIC -dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
  "debug-darwin-ppc-cc","cc:-DBN_DEBUG -DREF_CHECK -DCONF_DEBUG -DCRYPTO_MDEBUG -DB_ENDIAN -g -Wall -O::-D_REENTRANT:MACOSX::BN_LLONG RC4_CHAR RC4_CHUNK DES_UNROLL BF_PTR:${ppc32_asm}:osx32:dlfcn:darwin-shared:-fPIC:-dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
  
  ##### A/UX
+Common subdirectories: openssl-1.0.0g.orig/crypto and openssl-1.0.0g/crypto
+Common subdirectories: openssl-1.0.0g.orig/demos and openssl-1.0.0g/demos
+Common subdirectories: openssl-1.0.0g.orig/doc and openssl-1.0.0g/doc
+Common subdirectories: openssl-1.0.0g.orig/engines and openssl-1.0.0g/engines
+Common subdirectories: openssl-1.0.0g.orig/include and openssl-1.0.0g/include
+Common subdirectories: openssl-1.0.0g.orig/MacOS and openssl-1.0.0g/MacOS
+Common subdirectories: openssl-1.0.0g.orig/ms and openssl-1.0.0g/ms
+Common subdirectories: openssl-1.0.0g.orig/Netware and openssl-1.0.0g/Netware
+Common subdirectories: openssl-1.0.0g.orig/os2 and openssl-1.0.0g/os2
+Common subdirectories: openssl-1.0.0g.orig/perl and openssl-1.0.0g/perl
+Common subdirectories: openssl-1.0.0g.orig/shlib and openssl-1.0.0g/shlib
+Common subdirectories: openssl-1.0.0g.orig/ssl and openssl-1.0.0g/ssl
+Common subdirectories: openssl-1.0.0g.orig/test and openssl-1.0.0g/test
+Common subdirectories: openssl-1.0.0g.orig/times and openssl-1.0.0g/times
+Common subdirectories: openssl-1.0.0g.orig/tools and openssl-1.0.0g/tools
+Common subdirectories: openssl-1.0.0g.orig/util and openssl-1.0.0g/util
+Common subdirectories: openssl-1.0.0g.orig/VMS and openssl-1.0.0g/VMS
