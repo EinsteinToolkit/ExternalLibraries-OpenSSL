@@ -1,9 +1,6 @@
-Common subdirectories: openssl-1.0.0g.orig/apps and openssl-1.0.0g/apps
-Common subdirectories: openssl-1.0.0g.orig/bugs and openssl-1.0.0g/bugs
-Common subdirectories: openssl-1.0.0g.orig/certs and openssl-1.0.0g/certs
-diff -u openssl-1.0.0g.orig/Configure openssl-1.0.0g/Configure
---- openssl-1.0.0g.orig/Configure	2011-12-19 11:04:38.000000000 -0600
-+++ openssl-1.0.0g/Configure	2012-01-24 23:39:41.000000000 -0600
+diff -ru openssl-1.0.0h.orig/Configure openssl-1.0.0h/Configure
+--- openssl-1.0.0h.orig/Configure	2012-03-03 07:48:21.000000000 -0600
++++ openssl-1.0.0h/Configure	2012-03-30 12:50:43.000000000 -0500
 @@ -549,11 +549,11 @@
  
  ##### MacOS X (a.k.a. Rhapsody or Darwin) setup
@@ -21,20 +18,3 @@ diff -u openssl-1.0.0g.orig/Configure openssl-1.0.0g/Configure
  "debug-darwin-ppc-cc","cc:-DBN_DEBUG -DREF_CHECK -DCONF_DEBUG -DCRYPTO_MDEBUG -DB_ENDIAN -g -Wall -O::-D_REENTRANT:MACOSX::BN_LLONG RC4_CHAR RC4_CHUNK DES_UNROLL BF_PTR:${ppc32_asm}:osx32:dlfcn:darwin-shared:-fPIC:-dynamiclib:.\$(SHLIB_MAJOR).\$(SHLIB_MINOR).dylib",
  
  ##### A/UX
-Common subdirectories: openssl-1.0.0g.orig/crypto and openssl-1.0.0g/crypto
-Common subdirectories: openssl-1.0.0g.orig/demos and openssl-1.0.0g/demos
-Common subdirectories: openssl-1.0.0g.orig/doc and openssl-1.0.0g/doc
-Common subdirectories: openssl-1.0.0g.orig/engines and openssl-1.0.0g/engines
-Common subdirectories: openssl-1.0.0g.orig/include and openssl-1.0.0g/include
-Common subdirectories: openssl-1.0.0g.orig/MacOS and openssl-1.0.0g/MacOS
-Common subdirectories: openssl-1.0.0g.orig/ms and openssl-1.0.0g/ms
-Common subdirectories: openssl-1.0.0g.orig/Netware and openssl-1.0.0g/Netware
-Common subdirectories: openssl-1.0.0g.orig/os2 and openssl-1.0.0g/os2
-Common subdirectories: openssl-1.0.0g.orig/perl and openssl-1.0.0g/perl
-Common subdirectories: openssl-1.0.0g.orig/shlib and openssl-1.0.0g/shlib
-Common subdirectories: openssl-1.0.0g.orig/ssl and openssl-1.0.0g/ssl
-Common subdirectories: openssl-1.0.0g.orig/test and openssl-1.0.0g/test
-Common subdirectories: openssl-1.0.0g.orig/times and openssl-1.0.0g/times
-Common subdirectories: openssl-1.0.0g.orig/tools and openssl-1.0.0g/tools
-Common subdirectories: openssl-1.0.0g.orig/util and openssl-1.0.0g/util
-Common subdirectories: openssl-1.0.0g.orig/VMS and openssl-1.0.0g/VMS
