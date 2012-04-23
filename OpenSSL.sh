@@ -62,7 +62,7 @@ then
     
     # Set locations
     THORN=OpenSSL
-    NAME=openssl-1.0.0h
+    NAME=openssl-1.0.0i
     SRCDIR=$(dirname $0)
     BUILD_DIR=${SCRATCH_BUILD}/build/${THORN}
     if [ -z "${OPENSSL_INSTALL_DIR}" ]; then
