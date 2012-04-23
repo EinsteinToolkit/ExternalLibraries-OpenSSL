@@ -21,13 +21,18 @@ if [ -z "${OPENSSL_DIR}" ]; then
     echo "OpenSSL selected, but OPENSSL_DIR not set. Checking some places..."
     echo "END MESSAGE"
     
-    FILES="include/openssl/ssl.h lib/libssl.a lib/libcrypto.a"
-    DIRS="/usr /usr/local /opt/local"
-    for dir in $DIRS; do
-        OPENSSL_DIR="$dir"
-        for file in $FILES; do
-            if [ ! -r "$dir/$file" ]; then
-                unset OPENSSL_DIR
+    for libext in a dylib; do
+        FILES="include/openssl/ssl.h lib/libssl.${libext} lib/libcrypto.${libext}"
+        DIRS="/usr /usr/local /opt/local"
+        for dir in $DIRS; do
+            OPENSSL_DIR="$dir"
+            for file in $FILES; do
+                if [ ! -r "$dir/$file" ]; then
+                    unset OPENSSL_DIR
+                    break
+                fi
+            done
+            if [ -n "$OPENSSL_DIR" ]; then
                 break
             fi
         done
@@ -47,7 +52,7 @@ if [ -z "${OPENSSL_DIR}" ]; then
     fi
 fi
 
-
+exit
 
 ################################################################################
 # Build
