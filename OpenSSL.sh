@@ -21,21 +21,34 @@ if [ -z "${OPENSSL_DIR}" ]; then
     echo "OpenSSL selected, but OPENSSL_DIR not set. Checking some places..."
     echo "END MESSAGE"
     
-    for libext in a dylib; do
-        FILES="include/openssl/ssl.h lib/libssl.${libext} lib/libcrypto.${libext}"
-        DIRS="/usr /usr/local /opt/local"
-        for dir in $DIRS; do
-            OPENSSL_DIR="$dir"
-            for file in $FILES; do
-                if [ ! -r "$dir/$file" ]; then
-                    unset OPENSSL_DIR
+    DIRS="/usr /usr/local /opt/local /usr/local/packages usr/local/apps /opt/local ${HOME} c:/packages/"
+    # look into each directory
+    for dir in $DIRS; do
+        # libraries might have different file extensions
+        for libext in a so dylib; do
+            # libraries can be in /lib or /lib64
+            for libdir in lib64 lib; do
+                FILES="include/openssl/ssl.h $libdir/libssl.${libext} $libdir/libcrypto.${libext}"
+                # assume this is the one and check all needed files
+                OPENSSL_DIR="$dir"
+                for file in $FILES; do
+                    # discard this directory if one file was not found
+                    if [ ! -r "$dir/$file" ]; then
+                        unset OPENSSL_DIR
+                        break
+                    fi
+                done
+                # don't look further if all files have been found
+                if [ -n "$OPENSSL_DIR" ]; then
                     break
                 fi
             done
+           # don't look further if all files have been found
             if [ -n "$OPENSSL_DIR" ]; then
                 break
             fi
         done
+        # don't look further if all files have been found
         if [ -n "$OPENSSL_DIR" ]; then
             break
         fi
