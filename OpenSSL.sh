@@ -15,7 +15,6 @@ set -e                          # Abort on errors
 ################################################################################
 # Search
 ################################################################################
-
 if [ -z "${OPENSSL_DIR}" ]; then
     echo "BEGIN MESSAGE"
     echo "OpenSSL selected, but OPENSSL_DIR not set. Checking some places..."
@@ -65,7 +64,6 @@ if [ -z "${OPENSSL_DIR}" ]; then
     fi
 fi
 
-exit
 
 ################################################################################
 # Build
@@ -80,7 +78,7 @@ then
     
     # Set locations
     THORN=OpenSSL
-    NAME=openssl-1.0.0i
+    NAME=openssl-1.0.0j
     SRCDIR=$(dirname $0)
     BUILD_DIR=${SCRATCH_BUILD}/build/${THORN}
     if [ -z "${OPENSSL_INSTALL_DIR}" ]; then
