@@ -2,7 +2,7 @@
 
 PROVIDES OpenSSL
 {
-  SCRIPT OpenSSL.sh
+  SCRIPT configure.sh
   LANG bash
   OPTIONS OPENSSL_INSTALL_DIR
 }
