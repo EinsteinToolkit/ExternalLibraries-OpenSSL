@@ -26,7 +26,7 @@ if [ -z "${OPENSSL_DIR}" ]; then
         # libraries might have different file extensions
         for libext in a so dylib; do
             # libraries can be in /lib or /lib64
-            for libdir in lib64 lib; do
+            for libdir in lib64 lib/x86_64-linux-gnu lib/ia64-linux-gnu lib/i386-linux-gnu lib; do
                 FILES="include/openssl/ssl.h $libdir/libssl.${libext} $libdir/libcrypto.${libext}"
                 # assume this is the one and check all needed files
                 OPENSSL_DIR="$dir"
