@@ -124,8 +124,8 @@ then
         
         echo "OpenSSL: Unpacking archive..."
         pushd ${BUILD_DIR}
-        ${TAR} xzf ${SRCDIR}/dist/${NAME}.tar.gz
-        ${PATCH} -p0 < ${SRCDIR}/dist/darwin.patch
+        ${TAR?} xzf ${SRCDIR}/dist/${NAME}.tar.gz
+        ${PATCH?} -p0 < ${SRCDIR}/dist/darwin.patch
         
         echo "OpenSSL: Configuring..."
         cd ${NAME}
