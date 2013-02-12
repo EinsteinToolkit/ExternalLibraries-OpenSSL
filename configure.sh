@@ -129,6 +129,8 @@ then
         
         echo "OpenSSL: Configuring..."
         cd ${NAME}
+        # OpenSSL's 'config' script uses $options itself, so we unset it
+        unset options
         ./config --prefix=${OPENSSL_DIR}
         
         echo "OpenSSL: Building..."
