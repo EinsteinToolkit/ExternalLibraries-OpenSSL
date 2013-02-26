@@ -78,7 +78,7 @@ then
     
     # Set locations
     THORN=OpenSSL
-    NAME=openssl-1.0.0j
+    NAME=openssl-1.0.1e
     SRCDIR=$(dirname $0)
     BUILD_DIR=${SCRATCH_BUILD}/build/${THORN}
     if [ -z "${OPENSSL_INSTALL_DIR}" ]; then
@@ -115,7 +115,8 @@ then
         # Set up environment
         unset EXE
         unset LIBS
-        unset MAKEFLAGS # For some reason, openssl does not compile with this
+        unset MAKEFLAGS # For some reason, OpenSSL does not compile with this
+        unset options # OpenSSL's 'config' script uses $options itself
         
         echo "OpenSSL: Preparing directory structure..."
         mkdir build external done 2> /dev/null || true
@@ -125,12 +126,9 @@ then
         echo "OpenSSL: Unpacking archive..."
         pushd ${BUILD_DIR}
         ${TAR?} xzf ${SRCDIR}/dist/${NAME}.tar.gz
-        ${PATCH?} -p0 < ${SRCDIR}/dist/darwin.patch
         
         echo "OpenSSL: Configuring..."
         cd ${NAME}
-        # OpenSSL's 'config' script uses $options itself, so we unset it
-        unset options
         ./config --prefix=${OPENSSL_DIR}
         
         echo "OpenSSL: Building..."
@@ -145,7 +143,6 @@ then
         
         date > ${DONE_FILE}
         echo "OpenSSL: Done."
-        
         )
         
         if (( $? )); then
