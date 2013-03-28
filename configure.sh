@@ -15,7 +15,9 @@ set -e                          # Abort on errors
 ################################################################################
 # Search
 ################################################################################
-if [ -z "${OPENSSL_DIR}" ]; then
+if [ -z "${OPENSSL_DIR}" \
+     -o "$(echo "${OPENSSL_DIR}" | tr '[a-z]' '[A-Z]')" = 'NO_BUILD' ] 
+then
     echo "BEGIN MESSAGE"
     echo "OpenSSL selected, but OPENSSL_DIR not set. Checking some places..."
     echo "END MESSAGE"
