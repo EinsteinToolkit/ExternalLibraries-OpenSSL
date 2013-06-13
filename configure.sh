@@ -15,6 +15,7 @@ set -e                          # Abort on errors
 ################################################################################
 # Search
 ################################################################################
+
 if [ -z "${OPENSSL_DIR}" ]; then
     echo "BEGIN MESSAGE"
     echo "OpenSSL selected, but OPENSSL_DIR not set. Checking some places..."
