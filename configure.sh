@@ -118,6 +118,11 @@ then
         unset LIBS
         unset MAKEFLAGS # For some reason, OpenSSL does not compile with this
         unset options # OpenSSL's 'config' script uses $options itself
+        # OpenSSL doesn't want to link with -fopenmp (can't pass
+        # LDFLAGS?), so instead we remove all OpenMP flags
+        export CPPFLAGS=$(echo '' $CPPFLAGS | sed -e 's/-fopenmp//')
+        export CFLAGS=$(echo '' $CFLAGS | sed -e 's/-fopenmp//')
+        export LDFLAGS=$(echo '' $LDFLAGS | sed -e 's/-fopenmp//')
         
         echo "OpenSSL: Preparing directory structure..."
         mkdir build external done 2> /dev/null || true
@@ -130,7 +135,7 @@ then
         
         echo "OpenSSL: Configuring..."
         cd ${NAME}
-        ./config --prefix=${OPENSSL_DIR}
+        ./config --prefix=${OPENSSL_DIR} no-shared
         
         echo "OpenSSL: Building..."
         ${MAKE}
