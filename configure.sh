@@ -123,6 +123,11 @@ then
         export CPPFLAGS=$(echo '' $CPPFLAGS | sed -e 's/-fopenmp//')
         export CFLAGS=$(echo '' $CFLAGS | sed -e 's/-fopenmp//')
         export LDFLAGS=$(echo '' $LDFLAGS | sed -e 's/-fopenmp//')
+        # OpenSSL does not automatically build a 64bit version on 64bit Macs
+        # setting KERNEL_BITS=64 tells it we want one
+        if uname -v | grep >/dev/null '^Darwin.*RELEASE_X86_64' ; then
+          export KERNEL_BITS=64
+        fi
         
         echo "OpenSSL: Preparing directory structure..."
         mkdir build external done 2> /dev/null || true
