@@ -137,6 +137,20 @@ then
         echo "OpenSSL: Unpacking archive..."
         pushd ${BUILD_DIR}
         ${TAR?} xzf ${SRCDIR}/dist/${NAME}.tar.gz
+        ${PATCH?} -p0 < ${SRCDIR}/dist/openssl-1.0.1e-fix_pod_syntax-1.patch
+        # Some (ancient but still used) versions of patch don't support the
+        # patch format used here but also don't report an error using the
+        # exit code. So we use this patch to test for this
+        ${PATCH?} -p0 < ${SRCDIR}/dist/patchtest.patch
+        if [ ! -e openssl-1.0.1e/.patch_tmp ]; then
+            echo 'BEGIN ERROR'
+            echo 'The version of patch is too old to understand this patch format.'
+            echo 'Please set the PATCH environment variable to a more recent '
+            echo 'version of the patch command.'
+            echo 'END ERROR'
+            exit 1
+        fi
+        rm -f openssl-1.0.1e/.patch_tmp
         
         echo "OpenSSL: Configuring..."
         cd ${NAME}
