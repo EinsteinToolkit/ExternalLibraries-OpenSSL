@@ -120,9 +120,9 @@ then
         unset options # OpenSSL's 'config' script uses $options itself
         # OpenSSL doesn't want to link with -fopenmp (can't pass
         # LDFLAGS?), so instead we remove all OpenMP flags
-        export CPPFLAGS=$(echo '' $CPPFLAGS | sed -e 's/-fopenmp//')
-        export CFLAGS=$(echo '' $CFLAGS | sed -e 's/-fopenmp//')
-        export LDFLAGS=$(echo '' $LDFLAGS | sed -e 's/-fopenmp//')
+        export CPPFLAGS=$(echo '' $CPPFLAGS | sed -e 's/-f\?openmp//')
+        export CFLAGS=$(echo '' $CFLAGS | sed -e 's/-f\?openmp//')
+        export LDFLAGS=$(echo '' $LDFLAGS | sed -e 's/-f\?openmp//')
         
         echo "OpenSSL: Preparing directory structure..."
         mkdir build external done 2> /dev/null || true
