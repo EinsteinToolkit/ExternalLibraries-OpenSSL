@@ -96,7 +96,7 @@ then
 
     # Set locations
     THORN=OpenSSL
-    NAME=openssl-1.0.1f
+    NAME=openssl-1.0.1j
     SRCDIR=$(dirname $0)
     BUILD_DIR=${SCRATCH_BUILD}/build/${THORN}
     if [ -z "${OPENSSL_INSTALL_DIR}" ]; then
@@ -156,10 +156,6 @@ then
         ${TAR?} xzf ${SRCDIR}/dist/${NAME}.tar.gz
 
         cd ${NAME}
-        ${PATCH?} -p1 < ${SRCDIR}/dist/openssl-1.0.1f-fix_pod_syntax-1.patch
-        # Some (ancient but still used) versions of patch don't support the
-        # patch format used here but also don't report an error using the
-        # exit code. So we use this patch to test for this
         ${PATCH?} -p1 < ${SRCDIR}/dist/patchtest.patch
         if [ ! -e .patch_tmp ]; then
             echo 'BEGIN ERROR'
@@ -170,6 +166,10 @@ then
             exit 1
         fi
         rm -f .patch_tmp
+        # ${PATCH?} -p1 < ${SRCDIR}/dist/openssl-1.0.1f-fix_pod_syntax-1.patch
+        # # Some (ancient but still used) versions of patch don't support the
+        # # patch format used here but also don't report an error using the
+        # # exit code. So we use this patch to test for this
         
         echo "OpenSSL: Configuring..."
         ./config --prefix=${OPENSSL_DIR} no-shared
