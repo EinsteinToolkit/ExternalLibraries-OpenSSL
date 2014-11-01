@@ -97,7 +97,7 @@ then
     # Set locations
     THORN=OpenSSL
     NAME=openssl-1.0.1j
-    SRCDIR=$(dirname $0)
+    SRCDIR="$(dirname $0)"
     BUILD_DIR=${SCRATCH_BUILD}/build/${THORN}
     if [ -z "${OPENSSL_INSTALL_DIR}" ]; then
         INSTALL_DIR=${SCRATCH_BUILD}/external/${THORN}
@@ -137,9 +137,9 @@ then
         unset options # OpenSSL's 'config' script uses $options itself
         # OpenSSL doesn't want to link with -fopenmp (can't pass
         # LDFLAGS?), so instead we remove all OpenMP flags
-        export CPPFLAGS=$(echo '' $CPPFLAGS | sed -e 's/-f\?openmp//')
-        export CFLAGS=$(echo '' $CFLAGS | sed -e 's/-f\?openmp//')
-        export LDFLAGS=$(echo '' $LDFLAGS | sed -e 's/-f\?openmp//')
+        export CPPFLAGS="$(echo '' $CPPFLAGS | sed -e 's/-f\?openmp//')"
+        export CFLAGS="$(echo '' $CFLAGS | sed -e 's/-f\?openmp//')"
+        export LDFLAGS="$(echo '' $LDFLAGS | sed -e 's/-f\?openmp//')"
         # OpenSSL does not automatically build a 64bit version on 64bit Macs
         # setting KERNEL_BITS=64 tells it we want one
         if uname -v | grep >/dev/null '^Darwin.*RELEASE_X86_64' ; then
@@ -205,15 +205,15 @@ fi
 ################################################################################
 
 # Set options
-if [ "${OPENSSL_DIR}" != '/usr' -a "${OPENSSL_DIR}" != '/usr/local' ]; then
-    OPENSSL_INC_DIRS="${OPENSSL_DIR}/include"
-    OPENSSL_LIB_DIRS="${OPENSSL_DIR}/lib"
-fi
+OPENSSL_INC_DIRS="${OPENSSL_DIR}/include"
+OPENSSL_LIB_DIRS="${OPENSSL_DIR}/lib"
 OPENSSL_LIBS='ssl crypto'
+
+OPENSSL_INC_DIRS="$(${CCTK_HOME}/lib/sbin/strip-incdirs.sh ${OPENSSL_INC_DIRS})"
+OPENSSL_LIB_DIRS="$(${CCTK_HOME}/lib/sbin/strip-libdirs.sh ${OPENSSL_LIB_DIRS})"
 
 # Pass options to Cactus
 echo "BEGIN MAKE_DEFINITION"
-echo "HAVE_OPENSSL     = 1"
 echo "OPENSSL_DIR      = ${OPENSSL_DIR}"
 echo "OPENSSL_INC_DIRS = ${OPENSSL_INC_DIRS}"
 echo "OPENSSL_LIB_DIRS = ${OPENSSL_LIB_DIRS}"
